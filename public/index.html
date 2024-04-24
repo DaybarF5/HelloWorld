@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <title>PRUEBA</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+        <link href="css/profoundui.css" rel="stylesheet" type="text/css">
+        <link rel="icon" href="">
+        <script src="js/runtime.js" type="text/javascript" ></script>
+        <script src="FusionChartsXT/js/pui-fusioncharts.js" type="text/javascript" ></script>
+        <script type="text/javascript">
+
+            //Capturamos la URL
+            parametros = "";
+            callingURL = document.URL;
+
+            //Separamos los parametros
+            if(callingURL.indexOf('?') > 0)
+            {
+                parametros = callingURL.substring(callingURL.indexOf('?'),callingURL.length);
+            }
+
+            window.onload = function () {
+                pui.controller = "phpfiles/views.php" + parametros;
+                pui.start();
+            };
+        </script>
+    </head>
+    <body>
+        <div id="pui"></div>
+    </body>
+</html>
+

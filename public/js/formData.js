@@ -1,49 +1,72 @@
-async function intento(event) {
-    event.preventDefault();
-    csv_document = document.getElementById('file');
-    if (csv_document) {
-        try {
-
-            
-            console.log(csv_document);
-            //validar que el archivo sea csv
-            let ext = csv_document.split('.').pop();
-            if (ext !== 'csv') {
-                alert('El archivo debe ser de tipo CSV');
-                return false;
-            }
-        } catch (e) {
-            console.log(e);
-        }
-
-        let formData = new FormData();
-        formData.append('objeto', csv_document);
-        console.log(formData);
-    }
+//RUTA 
+// COPIA POR SI DEJA DE FUNCIONAR
+let request = "phpfiles/request.php?";
 
 
-    // COPIA POR SI DEJA DE FUNCIONAR
-    let request = "phpfiles/request.php?";
+let up = document.getElementById('submit');
+let download = document.getElementById('descargarCSV');
 
-    //esto deja de funcionar ocasionalmente
-    // let request = "phpfiles/request.php?send=1";
 
+
+async function intento() {
     try {
+        let file = document.getElementById('file').files[0];
+
+        const data = new FormData();
+        data.append("file", file);
+
         const response = await fetch(request, {
             method: "POST",
-            body: formData
-        }
-        );
-        const res_request = await response.json();
+            body: data
+        });
+        console.log("soy file " + file);
+        console.log("soy data" + data);
 
-        var data = JSON.parse(res_request);
-        if (data.status == true) {
-            return data.message;
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
         }
+        console.log("soy response" + response);
+
+        const text = await response.text();
+        console.log(text); // Log the response text
+
+        const dataJson = JSON.parse(text);
+        console.log(dataJson);
     } catch (error) {
-        console.error('An error occurred:', error);
+        console.error('There has been a problem with your fetch operation:', error);
     }
 }
 
 
 
+up.addEventListener("click", intento)
+
+
+function descargar() {
+
+    let peticion = ajax(request + "download=1")
+
+    let Window;
+
+    // Function that open the new Window 
+
+    Window = window.open(
+        "/../temp/empleados.csv",
+        "_blank", "width=400, height=300, top=230, left=540");
+}
+download.addEventListener("click", descargar)
+
+
+
+
+// try {
+
+//     //validar que el archivo sea csv
+//     let ext = csv_document.split('.').pop();
+//     if (ext !== 'csv') {
+//         alert('El archivo debe ser de tipo CSV');
+//         return false;
+//     }
+// } catch (e) {
+//     console.log(e);
+// }

@@ -19,9 +19,23 @@ if (isset($_REQUEST['peticion']) && trim($_REQUEST['peticion']) != "") {
             break;
     }
 }
-if (isset($_POST['download']) && $_POST['download'] == '1') {
+//var_dump($_REQUEST['download'][0]);
+
+if (isset($_REQUEST['download']) && $_REQUEST['download'] == '1') {
     $prueba = descargar();
 }
+
+
+if ($_FILES['file']) {
+    //echo json_encode(["message" => "Test response"]);
+    $data1['formData'] = 'js/formData.js';
+    $file = cargar_empleados($_FILES['file']);
+    echo json_encode($file);
+}
+
+
+
+
 
 //esto deja de funcionar ocasionalmente
 // if (isset($_GET['file']) && isset($_POST['send']) && $_POST['send'] == '1'){
@@ -30,7 +44,7 @@ if (isset($_POST['download']) && $_POST['download'] == '1') {
 // } 
 
 // COPIA POR SI DEJA DE FUNCIONAR
-if (isset($_GET['file'])){
-    $prueba = cargar_empleados($_GET['file']);
-    $data1['formData'] = 'js/formData.js';
-}
+// if (isset($_GET['file'])){
+//     $prueba = cargar_empleados($_GET['file']);
+//     $data1['formData'] = 'js/formData.js';
+// }

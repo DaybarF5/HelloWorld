@@ -22,21 +22,14 @@ function descargar()
         $empleados = $grid;
         $connect->close();
 
-        //$csv = dirname(__FILE__) . '/../database/empleados.csv';
-        //$archivo_csv = fopen($csv, 'w');
+        $csv = dirname(__FILE__) . '/../../public/temp/empleados.csv';
+        $archivo_csv = fopen($csv, 'w');
 
         $cabecera = array('ID', 'Nombre', 'Primer_Apellido', 'Segundo_apellido', 'Fecha_de_nacimiento', 'DNI', 'Puesto');
-        $handle = fopen('php://output', 'w');
-        // $handle = fopen('empleados.csv', 'w');
-
-        header('Content-Description: File Transfer');
-        header('Content-Type: application/csv');
-        header("Content-Disposition: attachment; filename=empleados.csv");
-        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
 
         ob_clean();
 
-        fputcsv($handle, $cabecera);
+        fputcsv($archivo_csv, $cabecera);
 
         foreach ($empleados as $empleado) {
 
@@ -50,23 +43,22 @@ function descargar()
                 $empleado['Puesto']
             );
 
-            fputcsv($handle, $row);
+            fputcsv($archivo_csv, $row);
         }
         ob_flush();
 
-        fclose($handle);
-        die();
+        fclose($archivo_csv);
+        return;
     } catch (Exception $e) {
 
         $data1['message'] = 'Error: ' . $e->getMessage();
     }
 }
 
-
 function cargar_empleados($parameter)
 {
     //ESTA BIEN ASI NO TOQUES, importante cargarlo desde la carpeta database del proyecto.
-    $csv = dirname(__FILE__) . '/../database/' . $parameter;
+    $csv = dirname(__FILE__) . '/../database/' . $parameter['name'];
     //$csv = dirname(__FILE__) . '/../database/empleados.csv';
     $lineas_csv = file($csv, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
 
@@ -108,6 +100,7 @@ function cargar_empleados($parameter)
     } catch (Exception $e) {
         $resultado['message'] = "Error: " . $e->getMessage();
     }
+    return $resultado;
 }
 
 

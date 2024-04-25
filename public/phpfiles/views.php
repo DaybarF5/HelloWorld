@@ -13,60 +13,66 @@ $view = '/jsonfiles/HelloWorld.json';
 
 
 
-
-//-------
-if (empty($_SESSION['screen']) || $_SESSION['screen'] == 'LOGIN') {
-    $_SESSION['screen'] = 'LOGIN';
-}
-
-
-if (isset($_POST['logIn']) && $_POST['logIn'] == '1') { // si se pulsa el boton de conectar
-    $usuario = conectar(); //se ejecuta una funcion que se llama conectar
-    if ($usuario['status'] === true) { //si el status es true, se asignan datos de sesion
-        $_SESSION['usuario'] = $usuario['usuario'];
-        $_SESSION['nombre'] = $usuario['nombre'];
-        $_SESSION['apellido'] = $usuario['apellido'];
-        $_SESSION['screen'] = 'ANADIR_EMP';
-    }
-}
-
-if (isset($_POST['conecta']) && $_POST['conecta'] == '1') { //boton para llevarte al formulario de conectar
-    $_SESSION['screen'] = 'LOGIN';
-}
-if (isset($_POST['register']) && $_POST['register'] == '1') { //boton para llevarte al formulario de registrarte
-    $_SESSION['screen'] = 'REGISTRO';
-}
-if (isset($_POST['add_user']) && $_POST['add_user'] == '1') { //boton que registra el usuario
-    $usuario = registrar();
-}
-
 if (isset($_POST['disconnect']) && $_POST['disconnect'] == '1') { //boton que te desconecta y te lleva a la pantalla principal
-    session_unset();
-    $_SESSION['screen'] = 'LOGIN';
+    session_destroy();
     header("Location: " . $_SERVER['PHP_SELF']);
 }
 
-if (isset($_POST['Accept']) && $_POST['Accept'] == '1') { //boton que acciona el formulario de añadir empleados.
-    anadir_empleados();
+if ($_SESSION) {
+    $screen = 'ANADIR_EMP';
+}
+else{
+    $screen = 'LOGIN';
 }
 
+
+//-----------------------------------------------------------------------------------
+
+
+
+if (isset($_POST['conecta']) && $_POST['conecta'] == '1') { //boton para llevarte al formulario de conectar
+    $screen = 'LOGIN';
+}
+//--------------------------------------------------------------------------------------------
+if (isset($_POST['End']) && $_POST['End'] == '1') { //boton que te lleva hacia atras
+    $screen = 'ANADIR_EMP';
+}
 if (isset($_POST['editEmple']) && $_POST['editEmple'] == '1') { //boton que te lleva a la pantalla de actualizar empleados
-    $_SESSION['screen'] = 'ACTUALIZAR';
+    $screen = 'ACTUALIZAR';
+}
+if (isset($_POST['register']) && $_POST['register'] == '1') { //boton para llevarte al formulario de registrarte
+    $screen = 'REGISTRO';
 }
 
 
-if ($_SESSION['screen'] == 'ACTUALIZAR') {
-    //condicional muy importante para no perder los datos cuando refrescas en la pantalla de actualizar
-    //aprovechando su sesion, se hace la petición (consigo solo hacerla 1 vez por refresh)
+
+
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+if (isset($_POST['add_user']) && $_POST['add_user'] == '1') { //boton que registra el usuario
+    $usuario = registrar();
+} //esto va para request
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+if ($screen === 'LOGIN') {
+    $data1['login'] = 'js/login.js';
+}
+
+if ($screen === 'ANADIR_EMP') {
+    $data1['anadir_emp'] = 'js/anadir_emp.js';
+}
+
+if ($screen === 'ACTUALIZAR') {
     $data1 = recuperar_empleados();
     $data1['ext_act'] = 'js/ext_actualizar.js';
 }
-
-if (isset($_POST['End']) && $_POST['End'] == '1') {
-    //Boton que se encuentra en la pantalla de ACTUALIZAR, al pulsar en el, te lleva al inicio.
-    $_SESSION['screen'] = 'ANADIR_EMP';
+if ($screen === 'REGISTRO') {
+    //LLAMAR AL JS QUE REGISTRE
 }
 
 
-$output = array('view' => $view, 'screen' => $_SESSION['screen'], 'data' => $data1);
+
+$output = array('view' => $view, 'screen' => $screen, 'data' => $data1);
 echo json_encode($output);

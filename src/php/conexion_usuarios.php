@@ -1,11 +1,11 @@
 <?php
 
-function conectar()
+function conectar($parameter)
 {
     $datos = array();
     try {
-        $usuario = $_REQUEST['usuario'];
-        $pass = $_REQUEST['pass'];
+        $usuario = $parameter['usuario'];
+        $pass = $parameter['pass'];
         $bd = dirname(__FILE__) . '/../database/F5.sqlite';
         $connect = new SQLite3($bd);
         $stmt = $connect->prepare("SELECT * FROM USUARIOS WHERE usuario = ?");

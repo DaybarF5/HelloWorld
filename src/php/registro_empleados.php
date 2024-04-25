@@ -1,15 +1,14 @@
 <?php
 
-function anadir_empleados()
+function anadir_empleados($parameter)
 {
     $bd = 'C:/wamp64/www/New_Project/src/database/F5.sqlite';
-
-    $person['Nom'] = $_REQUEST['Field0001'];
-    $person['P_Ap'] = $_REQUEST['Field0002'];
-    $person['S_Ap'] = $_REQUEST['Field0003'];
-    $person['FdN'] = $_REQUEST['Field0004'];
-    $person['DNI'] = $_REQUEST['Field0005'];
-    $person['Puesto'] = $_REQUEST['Field0006'];
+    $person['Nom'] = $parameter['name'];
+    $person['P_Ap'] = $parameter['last'];
+    $person['S_Ap'] = $parameter['last2'];
+    $person['FdN'] = $parameter['date'];
+    $person['DNI'] = $parameter['dni'];
+    $person['Puesto'] = $parameter['position'];
 
     try {
         $connect = new SQLite3($bd);
@@ -23,7 +22,8 @@ function anadir_empleados()
         $stmt->bindParam(6, $person['Puesto']);
         $stmt->execute();
         $stmt->close();
-        $data1['prueba'] = $person;
+        $data1['status'] = true;
+        $data1['message'] = "El empleado " . $person['Nom'] . " " . $person['P_Ap'] . " " . $person['S_Ap'] . " con puesto: " . $person['Puesto'] . " ha sido creado correctamente";
         return $data1;
     } catch (Exception $e) {
 

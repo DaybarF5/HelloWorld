@@ -27,7 +27,7 @@ function descargar()
 
         $cabecera = array('ID', 'Nombre', 'Primer_Apellido', 'Segundo_apellido', 'Fecha_de_nacimiento', 'DNI', 'Puesto');
 
-        ob_clean();
+      
 
         fputcsv($archivo_csv, $cabecera);
 
@@ -45,7 +45,7 @@ function descargar()
 
             fputcsv($archivo_csv, $row);
         }
-        ob_flush();
+    
 
         fclose($archivo_csv);
         return;

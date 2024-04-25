@@ -25,58 +25,64 @@ function actualizar_empleado(row, campo) {
     }, 1000);
   }
 }
-let request = "phpfiles/request.php?";
+let request_ext = "phpfiles/request.php?";
 
-let up = document.getElementById('submit');
-let download = document.getElementById('descargarCSV');
-
-
+let up = document.getElementById("submit");
+let download = document.getElementById("descargarCSV");
 
 async function intento() {
-    try {
-        let file = document.getElementById('file').files[0];
+  try {
+    let file = document.getElementById("file").files[0];
 
-        const data = new FormData();
-        data.append("file", file);
+    const data = new FormData();
+    data.append("file", file);
 
-        const response = await fetch(request, {
-            method: "POST",
-            body: data
-        });
-        console.log("soy file " + file);
-        console.log("soy data" + data);
+    const response = await fetch(request_ext, {
+      method: "POST",
+      body: data,
+    });
 
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        console.log("soy response" + response);
-
-        const text = await response.text();
-        console.log(text); // Log the response text
-
-        const dataJson = JSON.parse(text);
-        console.log(dataJson);
-    } catch (error) {
-        console.error('There has been a problem with your fetch operation:', error);
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
     }
+
+    const text = await response.text();
+
+    const dataJson = JSON.parse(text);
+
+    const container = document.getElementById("HtmlContainer2");
+    const confirm = document.createElement("span");
+    confirm.style = "position: absolute;  left: 50%; top: 30%;";
+    confirm.textContent = dataJson.message;
+    container.appendChild(confirm);
+  } catch (error) {
+    console.error("There has been a problem with your fetch operation:", error);
+  }
 }
-
-
-
-up.addEventListener("click", intento)
+up.onclick = intento;
 
 
 function descargar() {
+  let peticion = ajax(request_ext + "download=1");
 
-    let peticion = ajax(request + "download=1")
-
-    let Window;
-
-    // Function that open the new Window 
-
+  let Window;
+  
+  function open() {
     Window = window.open(
-        "/../temp/empleados.csv",
-        "_blank", "width=400, height=300, top=230, left=540");
-}
-download.addEventListener("click", descargar)
+      "/../temp/empleados.csv",
+      "_blank",
+      "width=400, height=300, top=230, left=540"
+    );
+    setTimeout(close, 1000);
+  }
 
+  function close() {
+    if (Window) {
+      Window.close();
+    }
+  }
+
+  open();
+}
+
+download.onclick = descargar;

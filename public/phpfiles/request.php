@@ -26,9 +26,9 @@ if (isset($_REQUEST['download']) && $_REQUEST['download'] == '1') {
 }
 
 
-if ($_FILES['file']) {
+if (isset($_FILES['file'])) {
     //echo json_encode(["message" => "Test response"]);
-    $data1['formData'] = 'js/formData.js';
+    $data1['ext_act'] = 'js/ext_actualizar.js';
     $file = cargar_empleados($_FILES['file']);
     echo json_encode($file);
 }

@@ -15,7 +15,7 @@ $view = '/jsonfiles/HelloWorld.json';
 
 
 //-------
-if (empty($_SESSION['screen'])) {
+if (empty($_SESSION['screen']) || $_SESSION['screen'] == 'LOGIN') {
     $_SESSION['screen'] = 'LOGIN';
 }
 
@@ -36,7 +36,7 @@ if (isset($_POST['conecta']) && $_POST['conecta'] == '1') { //boton para llevart
 if (isset($_POST['register']) && $_POST['register'] == '1') { //boton para llevarte al formulario de registrarte
     $_SESSION['screen'] = 'REGISTRO';
 }
-if (isset($_POST['add_user']) && $_POST['add_user'] == '1') { //boton que registra el usuario y te lleva al login para iniciar sesion
+if (isset($_POST['add_user']) && $_POST['add_user'] == '1') { //boton que registra el usuario
     $usuario = registrar();
 }
 
@@ -61,21 +61,6 @@ if ($_SESSION['screen'] == 'ACTUALIZAR') {
     $data1 = recuperar_empleados();
     $data1['ext_act'] = 'js/ext_actualizar.js';
 }
-
-// if ((isset($_POST['csv']) && $_POST['csv'] == '1') || (isset($_SESSION['screen']) && $_SESSION['screen'] != 'OPERAR_CSV')) {
-//     $_SESSION['screen'] = 'OPERAR_CSV';
-//     $data1['formData'] = 'js/formData.js';
-// }
-
-if ((isset($_POST['csv']) && $_POST['csv'] == '1')){
-    $_SESSION['screen'] = 'OPERAR_CSV';
-    $data1['formData'] = 'js/formData.js';
-}
-
-if ($_SESSION['screen'] == 'OPERAR_CSV') {
-    $data1['formData'] = 'js/formData.js';
-}
-
 
 if (isset($_POST['End']) && $_POST['End'] == '1') {
     //Boton que se encuentra en la pantalla de ACTUALIZAR, al pulsar en el, te lleva al inicio.

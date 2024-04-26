@@ -62,13 +62,17 @@ document.getElementById("submit").onclick = async function () {
     confirm.style = "position: absolute;  left: 50%; top: 40%;";
     confirm.textContent = dataJson.message;
     container.appendChild(confirm);
+
+    setTimeout(function () {
+      location.reload();
+    }, 1000);
+
   } catch (error) {
     console.error("There has been a problem with your fetch operation:", error);
   }
 };
 
-
-document.getElementById("descargarCSV").onclick = function(){
+document.getElementById("descargarCSV").onclick = function () {
   let peticion = ajax("phpfiles/request.php?" + "download=1");
 
   let Window;

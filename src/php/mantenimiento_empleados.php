@@ -12,7 +12,6 @@ function recuperar_empleados()
 
         while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
             array_push($grid, array(
-                'ID' => $row['ID'],
                 'Nom' => $row['Nombre'],
                 'P_Ap' => $row['Primer_Apellido'],
                 'S_Ap' => $row['Segundo_Apellido'],

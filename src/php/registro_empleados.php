@@ -29,7 +29,7 @@ function anadir_empleados($parameter)
                 $stmt->execute();
                 $stmt->close();
                 $data1['status'] = true;
-                $data1['message'] = "El empleado " . $person['Nom'] . " " . $person['P_Ap'] . " " . $person['S_Ap'] . " con puesto: " . $person['Puesto'] . " ha sido creado correctamente";
+                $data1['message'] = "El empleado ha sido creado correctamente";
             }
         } catch (Exception $e) {
 

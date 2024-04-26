@@ -95,7 +95,7 @@ function cargar_empleados($parameter)
         $stmt->close();
 
         $resultado['status'] = true;
-        $resultado['message'] = "Insercion realizada correctamente.";
+        $resultado['message'] = "Insercion realizada correctamente, Espere...";
     } catch (Exception $e) {
         $resultado['message'] = "Error: " . $e->getMessage();
     }

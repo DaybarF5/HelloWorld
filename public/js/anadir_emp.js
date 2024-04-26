@@ -32,7 +32,7 @@ document.getElementById("enviar").onclick = async function () {
 
     const container = document.getElementById("pui");
     const confirm = document.createElement("div");
-    confirm.style = "left: 335px; top: 420px; position: absolute;";
+    confirm.style = "left: 885px; top: 430px; position: absolute;";
     confirm.textContent = dataJson.message;
     container.appendChild(confirm);
 

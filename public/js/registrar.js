@@ -33,7 +33,7 @@ document.getElementById("registrar").onclick = async function (event) {
 
     const container = document.getElementById("pui");
     const confirm = document.createElement("div");
-    confirm.style = "position: absolute; left: 450px; top: 300px;";
+    confirm.style = "left: 880px; top: 410px; position: absolute; ";
     confirm.textContent = dataJson.message;
     container.appendChild(confirm);
 

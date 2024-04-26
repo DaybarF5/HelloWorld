@@ -59,7 +59,7 @@ document.getElementById("submit").onclick = async function () {
 
     const container = document.getElementById("HtmlContainer2");
     const confirm = document.createElement("span");
-    confirm.style = "position: absolute;  left: 50%; top: 30%;";
+    confirm.style = "position: absolute;  left: 50%; top: 40%;";
     confirm.textContent = dataJson.message;
     container.appendChild(confirm);
   } catch (error) {

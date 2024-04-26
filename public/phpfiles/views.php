@@ -29,9 +29,6 @@ if (isset($_POST['conecta']) && $_POST['conecta'] == '1') { //boton para llevart
 if (isset($_POST['anadirEmp']) && $_POST['anadirEmp'] == '1') { //boton que te lleva hacia atras
     $_SESSION['screen'] = 'ANADIR_EMP';
 }
-if (isset($_POST['editEmple']) && $_POST['editEmple'] == '1') { //boton que te lleva a la pantalla de actualizar empleados
-    $_SESSION['screen'] = 'ACTUALIZAR';
-}
 if (isset($_POST['register']) && $_POST['register'] == '1') { //boton para llevarte al formulario de registrarte
     $_SESSION['screen'] = 'REGISTRO';
 }
@@ -48,7 +45,7 @@ if ($_SESSION['screen'] === 'ANADIR_EMP') {
     $data1['anadir_emp'] = 'js/anadir_emp.js?v'.microtime();
 }
 
-if ($_SESSION['screen'] === 'ACTUALIZAR') {
+if ($_SESSION['screen'] === 'DASHBOARD') {
     $data1 = recuperar_empleados();
     $data1['ext_act'] = 'js/ext_actualizar.js?v'.microtime();
 }

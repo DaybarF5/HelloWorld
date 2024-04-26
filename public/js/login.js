@@ -1,11 +1,8 @@
-var click = document.getElementById("login");
-
-var usuario = document.getElementById("usuario");
-var pass = document.getElementById("pass");
-
-async function login(event) {
+document.getElementById("login").onclick = async function(event){
   try {
     event.preventDefault();
+    var usuario = document.getElementById("usuario");
+    var pass = document.getElementById("pass");
 
     let data = new FormData();
     data.append("usuario", usuario.value);
@@ -44,7 +41,7 @@ async function login(event) {
     eliminarUltimoElemento();
 
     if (dataJson.status == true) {
-      location.reload();
+     location.reload();
     }
     else{
       usuario.value = "";
@@ -53,5 +50,6 @@ async function login(event) {
   } catch (error) {
     console.error("There has been a problem with your fetch operation:", error);
   }
-}
-click.onclick = login;
+};
+
+

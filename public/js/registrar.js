@@ -1,16 +1,13 @@
-var click = document.getElementById("registrar");
-
-var usuario = document.getElementById("usuario");
-var email = document.getElementById("email");
-var contrasena = document.getElementById("contrasena");
-var nombre = document.getElementById("nombre");
-var apellido = document.getElementById("apellido");
-
-async function registrar(event) {
+document.getElementById("registrar").onclick = async function (event) {
   try {
-    
     event.preventDefault();
-  
+
+    var usuario = document.getElementById("usuario");
+    var email = document.getElementById("email");
+    var contrasena = document.getElementById("contrasena");
+    var nombre = document.getElementById("nombre");
+    var apellido = document.getElementById("apellido");
+
     let data = new FormData();
     data.append("usuario", usuario.value);
     data.append("email", email.value);
@@ -57,10 +54,7 @@ async function registrar(event) {
     contrasena.value = "";
     nombre.value = "";
     apellido.value = "";
-
-
   } catch (error) {
     console.error("There has been a problem with your fetch operation:", error);
   }
-}
-click.onclick = registrar;
+};

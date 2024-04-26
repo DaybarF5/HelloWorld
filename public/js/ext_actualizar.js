@@ -26,10 +26,7 @@ function actualizar_empleado(row, campo) {
   }
 }
 
-let up = document.getElementById("submit");
-let download = document.getElementById("descargarCSV");
-
-async function intento() {
+document.getElementById("submit").onclick = async function () {
   try {
     let file = document.getElementById("file").files[0];
 
@@ -65,14 +62,13 @@ async function intento() {
     confirm.style = "position: absolute;  left: 50%; top: 30%;";
     confirm.textContent = dataJson.message;
     container.appendChild(confirm);
-
   } catch (error) {
     console.error("There has been a problem with your fetch operation:", error);
   }
-}
-up.onclick = intento;
+};
 
-function descargar() {
+
+document.getElementById("descargarCSV").onclick = function(){
   let peticion = ajax("phpfiles/request.php?" + "download=1");
 
   let Window;
@@ -93,6 +89,4 @@ function descargar() {
   }
 
   open();
-}
-
-download.onclick = descargar;
+};

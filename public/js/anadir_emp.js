@@ -1,6 +1,4 @@
-var click = document.getElementById("enviar");
-
-async function anadir() {
+document.getElementById("enviar").onclick = async function () {
   try {
     var name = document.getElementById("name");
     var last = document.getElementById("1last");
@@ -60,5 +58,4 @@ async function anadir() {
   } catch (error) {
     console.error("There has been a problem with your fetch operation:", error);
   }
-}
-click.addEventListener("click", anadir);
+};

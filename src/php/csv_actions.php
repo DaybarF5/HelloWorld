@@ -57,9 +57,8 @@ function descargar()
 
 function cargar_empleados($parameter)
 {
-    //ESTA BIEN ASI NO TOQUES, importante cargarlo desde la carpeta database del proyecto.
-    $csv = dirname(__FILE__) . '/../database/' . $parameter['name'];
-    //$csv = dirname(__FILE__) . '/../database/empleados.csv';
+    $csv = $parameter['tmp_name'];
+
     $lineas_csv = file($csv, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
 
     // recojo nombres de las columnas

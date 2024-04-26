@@ -27,7 +27,7 @@ function descargar()
 
         $cabecera = array('ID', 'Nombre', 'Primer_Apellido', 'Segundo_apellido', 'Fecha_de_nacimiento', 'DNI', 'Puesto');
 
-      
+
 
         fputcsv($archivo_csv, $cabecera);
 
@@ -45,14 +45,14 @@ function descargar()
 
             fputcsv($archivo_csv, $row);
         }
-    
+
 
         fclose($archivo_csv);
-        return;
     } catch (Exception $e) {
 
         $data1['message'] = 'Error: ' . $e->getMessage();
     }
+    return;
 }
 
 function cargar_empleados($parameter)

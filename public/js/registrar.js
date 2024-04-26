@@ -1,22 +1,23 @@
-var click = document.getElementById("enviar");
+var click = document.getElementById("registrar");
 
-async function anadir() {
+var usuario = document.getElementById("usuario");
+var email = document.getElementById("email");
+var contrasena = document.getElementById("contrasena");
+var nombre = document.getElementById("nombre");
+var apellido = document.getElementById("apellido");
+
+async function registrar(event) {
   try {
-    var name = document.getElementById("name");
-    var last = document.getElementById("1last");
-    var last2 = document.getElementById("2last");
-    var date = document.getElementById("date");
-    var dni = document.getElementById("dni");
-    var position = document.getElementById("position");
-
+    
+    event.preventDefault();
+  
     let data = new FormData();
-    data.append("name", name.value);
-    data.append("last", last.value);
-    data.append("last2", last2.value);
-    data.append("date", date.value);
-    data.append("dni", dni.value);
-    data.append("position", position.value);
-    data.append("anadir", "anadir");
+    data.append("usuario", usuario.value);
+    data.append("email", email.value);
+    data.append("contrasena", contrasena.value);
+    data.append("nombre", nombre.value);
+    data.append("apellido", apellido.value);
+    data.append("registrar", "registrar");
 
     const response = await fetch("phpfiles/request.php?", {
       method: "POST",
@@ -31,10 +32,11 @@ async function anadir() {
     const text = await response.text();
 
     const dataJson = JSON.parse(text);
+    console.log(dataJson);
 
     const container = document.getElementById("pui");
     const confirm = document.createElement("div");
-    confirm.style = "left: 335px; top: 420px; position: absolute;";
+    confirm.style = "position: absolute; left: 450px; top: 300px;";
     confirm.textContent = dataJson.message;
     container.appendChild(confirm);
 
@@ -49,16 +51,16 @@ async function anadir() {
       }
     }
     eliminarUltimoElemento();
-    if (dataJson.status == true) {
-      name.value = "";
-      last.value = "";
-      last2.value = "";
-      date.value = "";
-      dni.value = "";
-      position.value = "";
-    }
+
+    usuario.value = "";
+    email.value = "";
+    contrasena.value = "";
+    nombre.value = "";
+    apellido.value = "";
+
+
   } catch (error) {
     console.error("There has been a problem with your fetch operation:", error);
   }
 }
-click.addEventListener("click", anadir);
+click.onclick = registrar;

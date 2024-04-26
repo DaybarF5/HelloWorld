@@ -23,7 +23,7 @@ function conectar($parameter)
                 $datos['status'] = false;
             }
         } else {
-            $datos['message'] = 'usuario erroneo';
+            $datos['message'] = 'usuario no existente';
             $datos['status'] = false;
         }
     } catch (Exception $e) {
@@ -32,33 +32,43 @@ function conectar($parameter)
     return $datos;
 }
 
-function registrar()
+function registrar($parameter)
 {
     $bd = dirname(__FILE__) . '/../database/F5.sqlite';
 
-    $person['email'] = $_REQUEST['email'];
-    $person['usuario'] = $_REQUEST['usuario'];
-    $person['contrasena'] = password_hash($_REQUEST['contrasena'], PASSWORD_DEFAULT);
-    $person['nombre'] = $_REQUEST['nombre'];
-    $person['apellido'] = $_REQUEST['apellido'];
-    if (!empty($_REQUEST['email']) && !empty($_REQUEST['usuario']) && !empty($_REQUEST['contrasena']) && !empty($_REQUEST['nombre']) && !empty($_REQUEST['apellido'])) {
+    $person['email'] = $parameter['email'];
+    $person['usuario'] = $parameter['usuario'];
+    $person['contrasena'] = password_hash($parameter['contrasena'], PASSWORD_DEFAULT);
+    $person['nombre'] = $parameter['nombre'];
+    $person['apellido'] = $parameter['apellido'];
+    if (!empty($person['email']) && !empty($person['usuario']) && !empty($person['contrasena']) && !empty($person['nombre']) && !empty($person['apellido'])) {
         try {
             $connect = new SQLite3($bd);
-            $stmt = $connect->prepare("INSERT INTO USUARIOS (usuario, contrasena, nombre, apellido, email) VALUES ( ?, ?, ?, ?, ?)");
-            $stmt->bindParam(1, $person['usuario']);
-            $stmt->bindParam(2, $person['contrasena']);
-            $stmt->bindParam(3, $person['nombre']);
-            $stmt->bindParam(4, $person['apellido']);
-            $stmt->bindParam(5, $person['email']);
-            $stmt->execute();
-            $stmt->close();
-            $datos['registro'] = $person;
+
+            $duplicate = $connect->prepare("SELECT * FROM USUARIOS WHERE usuario = ? OR email = ?");
+            $duplicate->bindValue(1, $person['usuario'], SQLITE3_TEXT);
+            $duplicate->bindValue(2, $person['email'], SQLITE3_TEXT);
+            $result = $duplicate->execute();
+            if ($result->fetchArray(SQLITE3_ASSOC)) {
+                $resultado['message'] = "Email o usuario ya registrados";
+            } else {
+                $stmt = $connect->prepare("INSERT INTO USUARIOS (usuario, contrasena, nombre, apellido, email) VALUES ( ?, ?, ?, ?, ?)");
+                $stmt->bindParam(1, $person['usuario']);
+                $stmt->bindParam(2, $person['contrasena']);
+                $stmt->bindParam(3, $person['nombre']);
+                $stmt->bindParam(4, $person['apellido']);
+                $stmt->bindParam(5, $person['email']);
+                $stmt->execute();
+                $stmt->close();
+                $resultado['status'] = true;
+                $resultado['message'] = "Bienvenido , registro realizado.";
+            }
         } catch (Exception $e) {
 
-            $datos['message'] = 'Error: ' . $e->getMessage();
+            $resultado['message'] = 'Error: ' . $e->getMessage();
         }
     } else {
-        $datos = 'Faltan campos';
+        $resultado['message'] = 'Faltan campos';
     }
-    return $datos;
+    return $resultado;
 }

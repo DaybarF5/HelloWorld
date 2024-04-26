@@ -26,24 +26,34 @@ if (isset($_REQUEST['peticion']) && trim($_REQUEST['peticion']) != "") {
 
 if (isset($_REQUEST['download']) && $_REQUEST['download'] == '1') {
     $prueba = descargar();
+    return;
 }
 
 if (isset($_POST['anadir'])) {
     $crear = anadir_empleados($_POST);
     echo json_encode($crear);
+    return;
 }
 
 
 if (isset($_FILES['file'])) {
     $file = cargar_empleados($_FILES['file']);
     echo json_encode($file);
+    return;
 }
 
 if (isset($_POST['login'])) { // si se pulsa el boton de conectar
     $usuario = conectar($_POST); //se ejecuta una funcion que se llama conectar
     if ($usuario['status'] === true) { //si el status es true, se asignan datos de sesion
         $_SESSION['usuario'] = $usuario['usuario'];
+        $_SESSION['screen'] = 'DASHBOARD';
     }
+    echo json_encode($usuario);   
+    return;
+}
+
+if (isset($_POST['registrar'])) {
+    $usuario = registrar($_POST);
     echo json_encode($usuario);
-    
+    return;
 }

@@ -28,7 +28,9 @@ function actualizar_empleado(row, campo) {
       "&id=" +
       id
   );
+  
   var data = JSON.parse(resultado);
+  console.log(data);
   if (data.status == true) {
     let ok = document.getElementById(campo + "." + row);
     ok.style.backgroundColor = "#B4FF9A"; //si se hace bien la insercion, es verde
@@ -85,7 +87,14 @@ document.getElementById("submit").onclick = async function () {
       location.reload();
     }, 1000);
   } catch (error) {
-    console.error("There has been a problem with your fetch operation:", error);
+    console.error(error);
+
+    const container = document.getElementById("HtmlContainer2");
+    const confirm = document.createElement("span");
+    confirm.style = "position: absolute;  left: 50%; top: 40%;";
+    confirm.textContent = "error en el csv: "+error;
+    container.appendChild(confirm);
+
   }
 };
 

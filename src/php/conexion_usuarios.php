@@ -1,5 +1,7 @@
 <?php
 
+
+
 function conectar($parameter)
 {
     $datos = array();
@@ -43,6 +45,33 @@ function registrar($parameter)
     $person['apellido'] = $parameter['apellido'];
     if (!empty($person['email']) && !empty($person['usuario']) && !empty($person['contrasena']) && !empty($person['nombre']) && !empty($person['apellido'])) {
         try {
+
+            if (!is_string($person['email']) || !filter_var($person['email'], FILTER_VALIDATE_EMAIL)) {
+                 $resultado['message'] = "Email no valido";
+                 $resultado['status'] = false;
+                 return $resultado;
+            }
+            if (!is_string($person['usuario'])) {
+                 $resultado['message'] = "Usuario no valido";
+                 $resultado['status'] = false;
+                 return $resultado;
+            }
+            if (!is_string($person['contrasena'])) {
+                 $resultado['message'] = "Contraseña no valida";
+                 $resultado['status'] = false;
+                 return $resultado;
+            }
+            if (!is_string($person['nombre'])) {
+                 $resultado['message'] = "Nombre no valido";
+                 $resultado['status'] = false;
+                 return $resultado;
+            }
+            if (!is_string($person['apellido'])) {
+                 $resultado['message'] = "Apellido no valido";
+                 $resultado['status'] = false;
+                 return $resultado;
+            }
+
             $connect = new SQLite3($bd);
 
             $duplicate = $connect->prepare("SELECT * FROM USUARIOS WHERE usuario = ? OR email = ?");

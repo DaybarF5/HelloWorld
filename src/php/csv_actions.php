@@ -95,7 +95,7 @@ function cargar_empleados($parameter)
         $resultado['status'] = true;
         $resultado['message'] = "Insercion realizada correctamente, Espere...";
     } catch (Exception $e) {
-        $resultado['message'] = "Error: " . $e->getMessage();
+        $resultado['message'] = "Error en el csv: " . $e->getMessage();
     }
     return $resultado;
 }

@@ -11,8 +11,57 @@ function anadir_empleados($parameter)
     $person['Puesto'] = $parameter['position'];
     if (!empty($person['Nom']) && !empty($person['P_Ap']) && !empty($person['S_Ap']) && !empty($person['FdN']) && !empty($person['DNI']) && !empty($person['Puesto'])) {
         try {
-            $connect = new SQLite3($bd);
 
+            if (!is_string($person['Nom'])) {
+                $data1['message'] = "Nombre no valido";
+                $data1['status'] = false;
+                return $data1;
+                
+            }
+            if (!is_string($person['P_Ap'])) {
+                $data1['message'] = "Primer Apellido no valido";
+                $data1['status'] = false;
+                return $data1;
+            }
+            if (!is_string($person['S_Ap'])) {
+                $data1['message'] = "Segundo Apellido no valido";
+                $data1['status'] = false;
+                return $data1;
+            }
+
+            if (is_string($person['FdN'])) {
+                function validarFechaNacimiento($parameter)
+                {
+                    $formato = 'd/m/Y';
+                    $fechaObjeto = DateTime::createFromFormat($formato, $parameter);
+                    return $fechaObjeto && $fechaObjeto->format($formato) === $parameter;
+                }
+
+                if (!validarFechaNacimiento($person['FdN'])) {
+                    $data1['message'] = "La fecha de nacimiento no es valida.";
+                    $data1['status'] = false;
+                    return $data1;
+                }
+            }
+
+            if (is_string($person['DNI'])) {
+                $regex_dni = '/^[0-9]{8}[A-Za-z]$/';
+                if (!preg_match($regex_dni, $person['DNI'])) {
+                    $data1['message'] = "El DNI no es válido.";
+                    $data1['status'] = false;
+                    return $data1;
+                }
+            }
+            if (is_string($person['Puesto'])) {
+                $puestos = ['Programador','RRHH','SISTEMAS','VENTAS','INVERSIONES','DIRECTOR'];
+                if (!in_array($person['Puesto'],$puestos)){
+                    $data1['message'] = "El Puesto no es válido.";
+                    $data1['status'] = false;
+                    return $data1;
+                }
+            }
+
+            $connect = new SQLite3($bd);
             $duplicate = $connect->prepare("SELECT * FROM EMPLEADOS WHERE DNI = ?");
             $duplicate->bindValue(1, $person['DNI'], SQLITE3_TEXT);
             $result = $duplicate->execute();

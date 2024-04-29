@@ -40,9 +40,9 @@ document.getElementById("enviar").onclick = async function () {
     console.log(response);
 
     const text = await response.text();
-
+    
     const dataJson = JSON.parse(text);
-
+    console.log(dataJson);
     const container = document.getElementById("pui");
     const confirm = document.createElement("div");
     confirm.style = "left: 885px; top: 430px; position: absolute;";

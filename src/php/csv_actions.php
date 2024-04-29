@@ -10,7 +10,6 @@ function descargar()
 
         while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
             array_push($grid, array(
-                'ID' => $row['ID'],
                 'Nom' => $row['Nombre'],
                 'P_Ap' => $row['Primer_Apellido'],
                 'S_Ap' => $row['Segundo_Apellido'],
@@ -25,16 +24,15 @@ function descargar()
         $csv = dirname(__FILE__) . '/../../public/temp/empleados.csv';
         $archivo_csv = fopen($csv, 'w');
 
-        $cabecera = array('ID', 'Nombre', 'Primer_Apellido', 'Segundo_apellido', 'Fecha_de_nacimiento', 'DNI', 'Puesto');
+        $cabecera = array('Nombre', 'Primer_Apellido', 'Segundo_Apellido', 'Fecha_de_nacimiento', 'DNI', 'Puesto');
 
 
 
-        fputcsv($archivo_csv, $cabecera);
+        fputcsv($archivo_csv, $cabecera,';');
 
         foreach ($empleados as $empleado) {
 
             $row = array(
-                $empleado['ID'],
                 $empleado['Nom'],
                 $empleado['P_Ap'],
                 $empleado['S_Ap'],
@@ -43,7 +41,7 @@ function descargar()
                 $empleado['Puesto']
             );
 
-            fputcsv($archivo_csv, $row);
+            fputcsv($archivo_csv, $row,';');
         }
 
 
@@ -62,13 +60,13 @@ function cargar_empleados($parameter)
     $lineas_csv = file($csv, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
 
     // recojo nombres de las columnas
-    $cabecera = str_getcsv(array_shift($lineas_csv));
+    $cabecera = str_getcsv(array_shift($lineas_csv),';');
 
     $empleados = array();
 
     // recoger la informacion del archivo, y acomodarlo
     foreach ($lineas_csv as $linea) {
-        $csv = str_getcsv($linea);
+        $csv = str_getcsv($linea,';');
         $fila = array();
         foreach ($csv as $index => $valor) {
             $nombre_columna = $cabecera[$index];

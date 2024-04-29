@@ -1,6 +1,7 @@
-ID,Nombre,Primer_Apellido,Segundo_apellido,Fecha_de_nacimiento,DNI,Puesto
-820,csdc,scdsdc,sdcscsc,16/04/22,nrymhn,RRHH
-821,aaascscsdcaaa,TEsdcSSSSSSSS,TEST,01/01/01,TEST,PROGRAMADOR
-822,sssssdcscsstest,asdsftest,Arduitestno,01/06/98,042323a,PROGRAMADOR
-823,scacscscscsc,ascascac,acacac,23/04/24,caacascac,SISTEMAS
-824,aaasdcsdcsdca,aaaa,aaaa,08/04/24,aaaaaa,PROGRAMADOR
+Nombre;Primer_Apellido;Segundo_Apellido;Fecha_de_nacimiento;DNI;Puesto
+hfgh;fghfh;ghfg;01/06/1998;03201142A;RRHH
+sfsdf;fss;sfsfs;15/04/2323;09876543A;SISTEMAS
+dfgdgd;gdfgdgd;gdgdgdg;09/04/2024;12345678o;SISTEMAS
+hfgh;fghfh;ghfg;01/06/1998;03201142A;RRHH
+sfsdf;fss;sfsfs;15/04/2323;09876543A;SISTEMAS
+dfgdgd;gdfgdgd;gdgdgdg;09/04/2024;12345678o;SISTEMAS

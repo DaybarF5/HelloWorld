@@ -7,6 +7,19 @@ document.getElementById("enviar").onclick = async function () {
     var dni = document.getElementById("dni");
     var position = document.getElementById("position");
 
+    var regex_FdN = /^\d{2}\/\d{2}\/\d{4}$/;
+    var regexDNI = /^\d{8}[a-zA-Z]$/;
+    if (regex_FdN.test(date.value)) {
+    } else {
+      alert("La fecha no tiene el formato correcto. Ejemplo: 01/01/2000");
+      return false;
+    }
+    if (regexDNI.test(dni.value)) {
+    } else {
+      alert("DNI incorrecto. Ejemplo: 12345678A");
+      return false;
+    }
+
     let data = new FormData();
     data.append("name", name.value);
     data.append("last", last.value);

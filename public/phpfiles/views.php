@@ -36,7 +36,6 @@ if (isset($_POST['back']) && $_POST['back'] == '1') { //boton para ir hacia atra
     $_SESSION['screen'] = 'DASHBOARD';
 }
 
-
 if ($_SESSION['screen'] === 'LOGIN') {
     $data1['login'] = 'js/login.js?v'.microtime();
 }
@@ -49,6 +48,7 @@ if ($_SESSION['screen'] === 'DASHBOARD') {
     $data1 = recuperar_empleados();
     $data1['ext_act'] = 'js/ext_actualizar.js?v'.microtime();
 }
+
 if ($_SESSION['screen'] === 'REGISTRO') {
     $data1['registrar'] = 'js/registrar.js?v'.microtime();
 }

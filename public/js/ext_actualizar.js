@@ -2,6 +2,24 @@ function actualizar_empleado(row, campo) {
   let id = get("ID." + row);
 
   let valor = get(campo + "." + row);
+
+  if (campo == "FdN") {
+    var regex_FdN = /^\d{2}\/\d{2}\/\d{4}$/;
+    if (regex_FdN.test(valor)) {
+    } else {
+      alert("La fecha no tiene el formato correcto. Ejemplo: 01/01/2000");
+      return false;
+    }
+  }
+  if (campo == "DNI") {
+    var regexDNI = /^\d{8}[a-zA-Z]$/;
+    if (regexDNI.test(valor)) {
+    } else {
+      alert("DNI incorrecto. Ejemplo: 12345678A");
+      return false;
+    }
+  }
+
   let resultado = ajax(
     "phpfiles/request.php?peticion=actualizar_empleado&campo=" +
       campo +
@@ -66,7 +84,6 @@ document.getElementById("submit").onclick = async function () {
     setTimeout(function () {
       location.reload();
     }, 1000);
-
   } catch (error) {
     console.error("There has been a problem with your fetch operation:", error);
   }
@@ -74,23 +91,6 @@ document.getElementById("submit").onclick = async function () {
 
 document.getElementById("descargarCSV").onclick = function () {
   let peticion = ajax("phpfiles/request.php?" + "download=1");
-
-  let Window;
-
-  function open() {
-    Window = window.open(
-      "/../temp/empleados.csv",
-      "_blank",
-      "width=400, height=300, top=230, left=540"
-    );
-    setTimeout(close, 5000);
-  }
-
-  function close() {
-    if (Window) {
-      Window.close();
-    }
-  }
-
-  open();
+  
+  window.location.href = "/../temp/empleados.csv";
 };

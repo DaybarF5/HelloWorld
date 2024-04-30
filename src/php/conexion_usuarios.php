@@ -83,7 +83,7 @@ function registrar($parameter)
             }
 
             $filtroEmail = validateEmail($person['email']);
-            if ($filtroEmail == false) {
+            if ($filtroEmail != true) {
                 $resultado['message'] = "formato del email no valido";
                 $resultado['status'] = false;
                 return $resultado;

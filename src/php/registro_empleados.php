@@ -47,21 +47,21 @@ function anadir_empleados($parameter)
             }
 
             $filtroFecha = validateDate($person['Fdn']);
-            if ($filtroFecha == false) {
+            if ($filtroFecha != true) {
                 $data1['message'] = "Fecha no existente";
                 $data1['status'] = false;
                 return $data1;
             }
 
             $filtroDNI = validateDNI($person['DNI']);
-            if ($filtroDNI == false) {
+            if ($filtroDNI != true) {
                 $data1['message'] = "DNI no existente.";
                 $data1['status'] = false;
                 return $data1;
             }
 
             $filtroPuesto = validateJob($person['Puesto']);
-            if ($filtroPuesto == false) {
+            if ($filtroPuesto != true) {
                 $data1['message'] = "Puesto no existente.";
                 $data1['status'] = false;
                 return $data1;

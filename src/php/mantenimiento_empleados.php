@@ -73,7 +73,7 @@ function actualizar_empleados($empleado)
 
         if ($campo == "DNI") {
             $filtro = validateDNI($empleado['valor']);
-            if ($filtro == false) {
+            if ($filtro != true) {
                 $resultado['message'] = "DNI no existente.";
                 $resultado['status'] = false;
                 return $resultado;
@@ -81,7 +81,7 @@ function actualizar_empleados($empleado)
         }
         if ($campo == "Fecha_de_nacimiento") {
             $filtro = validateDate($empleado['valor']);
-            if ($filtro == false) {
+            if ($filtro != true) {
                 $resultado['message'] = "Fecha no existente.";
                 $resultado['status'] = false;
                 return $resultado;
@@ -89,7 +89,7 @@ function actualizar_empleados($empleado)
         }
         if ($campo == "Puesto") {
             $filtro = validateJob($empleado['valor']);
-            if ($filtro == false) {
+            if ($filtro != true) {
                 $resultado['message'] = "Puesto no existenet.";
                 $resultado['status'] = false;
                 return $resultado;

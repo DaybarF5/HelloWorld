@@ -1,5 +1,5 @@
 <?php
-
+require_once "customFunctions.php";
 function recuperar_empleados()
 {
     $grid = [];
@@ -69,40 +69,32 @@ function actualizar_empleados($empleado)
             $resultado['status'] = false;
             $resultado['message'] = "Modificación abortada, datos no deseados.";
             return $resultado;
-        }//aqui entra
-        //------------------------ DE AQUI
+        }
+
         if ($campo == "DNI") {
-            $regex_dni = '/^[0-9]{8}[A-Za-z]$/';
-            print_r($empleado['valor']);
-            if (!preg_match($regex_dni, $empleado['valor'])) {
-                $resultado['message'] = "El DNI no es válido.";
+            $filtro = validateDNI($empleado['valor']);
+            if ($filtro == false) {
+                $resultado['message'] = "DNI no existente.";
                 $resultado['status'] = false;
                 return $resultado;
             }
         }
-        if ($campo == "FdN") {
-            function validarFechaNacimiento($parameter)
-            {
-                $formato = 'd/m/Y';
-                $fechaObjeto = DateTime::createFromFormat($formato, $parameter);
-                return $fechaObjeto && $fechaObjeto->format($formato) === $parameter;
-            }
-
-            if (!validarFechaNacimiento($empleado['valor'])) {
-                $resultado['message'] = "La fecha de nacimiento no es valida.";
+        if ($campo == "Fecha_de_nacimiento") {
+            $filtro = validateDate($empleado['valor']);
+            if ($filtro == false) {
+                $resultado['message'] = "Fecha no existente.";
                 $resultado['status'] = false;
                 return $resultado;
             }
         }
         if ($campo == "Puesto") {
-            $puestos = ['Programador', 'RRHH', 'SISTEMAS', 'VENTAS', 'INVERSIONES', 'DIRECTOR'];
-            if (!in_array($empleado['valor'], $puestos)) {
-                $resultado['message'] = "El Puesto no es válido.";
+            $filtro = validateJob($empleado['valor']);
+            if ($filtro == false) {
+                $resultado['message'] = "Puesto no existenet.";
                 $resultado['status'] = false;
                 return $resultado;
             }
         }
-        //------------------------ A AQUI NO ENTRA
         $query = "UPDATE EMPLEADOS SET {$campo} = :dato WHERE ID = :ID";
         $stmt = $connect->prepare($query);
         $stmt->bindValue(':dato', $empleado['valor'], SQLITE3_TEXT);

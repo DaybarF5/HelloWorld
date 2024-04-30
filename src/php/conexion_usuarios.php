@@ -1,13 +1,23 @@
 <?php
-
-
-
+require_once "customFunctions.php";
 function conectar($parameter)
 {
-    $datos = array();
+   
     try {
         $usuario = $parameter['usuario'];
         $pass = $parameter['pass'];
+
+        if (!is_string($usuario)) {
+            $resultado['message'] = "Usuario no valido";
+            $resultado['status'] = false;
+            return $resultado;
+        }
+        if (!is_string($pass)) {
+            $resultado['message'] = "Contraseña no valida";
+            $resultado['status'] = false;
+            return $resultado;
+        }
+
         $bd = dirname(__FILE__) . '/../database/F5.sqlite';
         $connect = new SQLite3($bd);
         $stmt = $connect->prepare("SELECT * FROM USUARIOS WHERE usuario = ?");
@@ -16,22 +26,22 @@ function conectar($parameter)
         $row = $result->fetchArray(SQLITE3_ASSOC);
         if ($row) {
             if (password_verify($pass, $row['contrasena'])) {
-                $datos['usuario'] = $row['usuario'];
-                $datos['nombre'] = $row['nombre'];
-                $datos['apellido'] = $row['apellido'];
-                $datos['status'] = true;
+                $resultado['usuario'] = $row['usuario'];
+                $resultado['nombre'] = $row['nombre'];
+                $resultado['apellido'] = $row['apellido'];
+                $resultado['status'] = true;
             } else {
-                $datos['message'] = 'contraseña erronea';
-                $datos['status'] = false;
+                $resultado['message'] = 'contraseña erronea';
+                $resultado['status'] = false;
             }
         } else {
-            $datos['message'] = 'usuario no existente';
-            $datos['status'] = false;
+            $resultado['message'] = 'usuario no existente';
+            $resultado['status'] = false;
         }
     } catch (Exception $e) {
-        $datos['message'] = "Error: " . $e->getMessage();
+        $resultado['message'] = "Error: " . $e->getMessage();
     }
-    return $datos;
+    return $resultado;
 }
 
 function registrar($parameter)
@@ -46,30 +56,37 @@ function registrar($parameter)
     if (!empty($person['email']) && !empty($person['usuario']) && !empty($person['contrasena']) && !empty($person['nombre']) && !empty($person['apellido'])) {
         try {
 
-            if (!is_string($person['email']) || !filter_var($person['email'], FILTER_VALIDATE_EMAIL)) {
-                 $resultado['message'] = "Email no valido";
-                 $resultado['status'] = false;
-                 return $resultado;
+            if (!is_string($person['email'])) {
+                $resultado['message'] = "Email no valido";
+                $resultado['status'] = false;
+                return $resultado;
             }
             if (!is_string($person['usuario'])) {
-                 $resultado['message'] = "Usuario no valido";
-                 $resultado['status'] = false;
-                 return $resultado;
+                $resultado['message'] = "Usuario no valido";
+                $resultado['status'] = false;
+                return $resultado;
             }
             if (!is_string($person['contrasena'])) {
-                 $resultado['message'] = "Contraseña no valida";
-                 $resultado['status'] = false;
-                 return $resultado;
+                $resultado['message'] = "Contraseña no valida";
+                $resultado['status'] = false;
+                return $resultado;
             }
             if (!is_string($person['nombre'])) {
-                 $resultado['message'] = "Nombre no valido";
-                 $resultado['status'] = false;
-                 return $resultado;
+                $resultado['message'] = "Nombre no valido";
+                $resultado['status'] = false;
+                return $resultado;
             }
             if (!is_string($person['apellido'])) {
-                 $resultado['message'] = "Apellido no valido";
-                 $resultado['status'] = false;
-                 return $resultado;
+                $resultado['message'] = "Apellido no valido";
+                $resultado['status'] = false;
+                return $resultado;
+            }
+
+            $filtroEmail = validateEmail($person['email']);
+            if ($filtroEmail == false) {
+                $resultado['message'] = "formato del email no valido";
+                $resultado['status'] = false;
+                return $resultado;
             }
 
             $connect = new SQLite3($bd);

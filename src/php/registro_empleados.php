@@ -1,5 +1,5 @@
 <?php
-
+require_once "customFunctions.php";
 function anadir_empleados($parameter)
 {
     $bd = 'C:/wamp64/www/New_Project/src/database/F5.sqlite';
@@ -16,7 +16,6 @@ function anadir_empleados($parameter)
                 $data1['message'] = "Nombre no valido";
                 $data1['status'] = false;
                 return $data1;
-                
             }
             if (!is_string($person['P_Ap'])) {
                 $data1['message'] = "Primer Apellido no valido";
@@ -29,36 +28,43 @@ function anadir_empleados($parameter)
                 return $data1;
             }
 
-            if (is_string($person['FdN'])) {
-                function validarFechaNacimiento($parameter)
-                {
-                    $formato = 'd/m/Y';
-                    $fechaObjeto = DateTime::createFromFormat($formato, $parameter);
-                    return $fechaObjeto && $fechaObjeto->format($formato) === $parameter;
-                }
-
-                if (!validarFechaNacimiento($person['FdN'])) {
-                    $data1['message'] = "La fecha de nacimiento no es valida.";
-                    $data1['status'] = false;
-                    return $data1;
-                }
+            if (!is_string($person['FdN'])) {
+                $data1['message'] = "Fecha de nacimiento no valida";
+                $data1['status'] = false;
+                return $data1;
             }
 
-            if (is_string($person['DNI'])) {
-                $regex_dni = '/^[0-9]{8}[A-Za-z]$/';
-                if (!preg_match($regex_dni, $person['DNI'])) {
-                    $data1['message'] = "El DNI no es válido.";
-                    $data1['status'] = false;
-                    return $data1;
-                }
+            if (!is_string($person['DNI'])) {
+                $data1['message'] = "El DNI no es válido.";
+                $data1['status'] = false;
+                return $data1;
             }
-            if (is_string($person['Puesto'])) {
-                $puestos = ['Programador','RRHH','SISTEMAS','VENTAS','INVERSIONES','DIRECTOR'];
-                if (!in_array($person['Puesto'],$puestos)){
-                    $data1['message'] = "El Puesto no es válido.";
-                    $data1['status'] = false;
-                    return $data1;
-                }
+
+            if (!is_string($person['Puesto'])) {
+                $data1['message'] = "El Puesto no es válido.";
+                $data1['status'] = false;
+                return $data1;
+            }
+
+            $filtroFecha = validateDate($person['Fdn']);
+            if ($filtroFecha == false) {
+                $data1['message'] = "Fecha no existente";
+                $data1['status'] = false;
+                return $data1;
+            }
+
+            $filtroDNI = validateDNI($person['DNI']);
+            if ($filtroDNI == false) {
+                $data1['message'] = "DNI no existente.";
+                $data1['status'] = false;
+                return $data1;
+            }
+
+            $filtroPuesto = validateJob($person['Puesto']);
+            if ($filtroPuesto == false) {
+                $data1['message'] = "Puesto no existente.";
+                $data1['status'] = false;
+                return $data1;
             }
 
             $connect = new SQLite3($bd);

@@ -30,7 +30,7 @@ function actualizar_empleado(row, campo) {
   );
   
   var data = JSON.parse(resultado);
-  console.log(data);
+
   if (data.status == true) {
     let ok = document.getElementById(campo + "." + row);
     ok.style.backgroundColor = "#B4FF9A"; //si se hace bien la insercion, es verde

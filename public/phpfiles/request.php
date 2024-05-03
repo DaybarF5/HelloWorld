@@ -5,7 +5,6 @@ require_once "../../src/php/mantenimiento_empleados.php";
 require_once "../../src/php/csv_actions.php";
 require_once "../../src/php/registro_empleados.php";
 require_once "../../src/php/conexion_usuarios.php";
-
 $resultado = ['status' => false, 'message' => 'Petición si procesar'];
 
 if (isset($_REQUEST['peticion']) && trim($_REQUEST['peticion']) != "") {
@@ -45,7 +44,7 @@ if (isset($_POST['login'])) { // si se pulsa el boton de conectar
         $_SESSION['usuario'] = $usuario['usuario'];
         $_SESSION['screen'] = 'DASHBOARD';
     }
-    echo json_encode($usuario);   
+    echo json_encode($usuario);
 }
 
 if (isset($_POST['registrar'])) {

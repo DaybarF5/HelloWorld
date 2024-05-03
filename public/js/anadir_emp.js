@@ -1,72 +1,185 @@
-document.getElementById("enviar").onclick = async function () {
-  try {
-    var name = document.getElementById("name");
-    var last = document.getElementById("1last");
-    var last2 = document.getElementById("2last");
-    var date = document.getElementById("date");
-    var dni = document.getElementById("dni");
-    var position = document.getElementById("position");
-
-    var regex_FdN = /^\d{2}\/\d{2}\/\d{4}$/;
-    var regexDNI = /^\d{8}[a-zA-Z]$/;
-    if (regex_FdN.test(date.value)) {
-    } else {
-      alert("La fecha no tiene el formato correcto. Ejemplo: 01/01/2000");
-      return false;
-    }
-    if (regexDNI.test(dni.value)) {
-    } else {
-      alert("DNI incorrecto. Ejemplo: 12345678A");
-      return false;
-    }
-
-    let data = new FormData();
-    data.append("name", name.value);
-    data.append("last", last.value);
-    data.append("last2", last2.value);
-    data.append("date", date.value);
-    data.append("dni", dni.value);
-    data.append("position", position.value);
-    data.append("anadir", "anadir");
-
-    const response = await fetch("phpfiles/request.php?", {
-      method: "POST",
-      body: data,
-    });
-
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
-    }
-    console.log(response);
-
-    const text = await response.text();
-    
-    const dataJson = JSON.parse(text);
-    console.log(dataJson);
+document.getElementById("enviar").onclick = async function (event) {
+  event.preventDefault();
+  var nameValue = document.getElementById("name").value;
+  if (nameValue === "") {
     const container = document.getElementById("pui");
-    const confirm = document.createElement("div");
-    confirm.style = "left: 885px; top: 430px; position: absolute;";
-    confirm.textContent = dataJson.message;
+    const confirm = document.createElement("p");
+    confirm.id = "error_name";
+    confirm.style.cssText =
+      "left: 1015px; top: 140px; position: absolute; background-color: #FF6737; text-align: center; vertical-align: middle;";
+    confirm.textContent = "Nombre es obligatorio";
     container.appendChild(confirm);
+  } else {
+    var err = document.getElementById("error_name");
+    if (err) {
+      err.remove();
+    }
+  }
 
-    function eliminarUltimoElemento() {
-      var contenedor = document.getElementById("pui");
-      var ultimoHijo = contenedor.lastChild;
-      if (ultimoHijo) {
-        // Esperar 3 segundos antes de eliminar el último hijo del contenedor
-        setTimeout(function () {
-          contenedor.removeChild(ultimoHijo);
-        }, 3000); // 3000 milisegundos = 3 segundos
+  var lastValue = document.getElementById("1last").value;
+  if (lastValue === "") {
+    const container = document.getElementById("pui");
+    const confirm = document.createElement("p");
+    confirm.id = "error_1last";
+    confirm.style.cssText =
+      "left: 1015px; top: 170px; position: absolute; background-color: #FF6737; text-align: center; vertical-align: middle;";
+    confirm.textContent = "Primer Apellido es obligatorio";
+    container.appendChild(confirm);
+  } else {
+    var err = document.getElementById("error_1last");
+    if (err) {
+      err.remove();
+    }
+  }
+
+  var last2Value = document.getElementById("2last").value;
+  if (last2Value === "") {
+    const container = document.getElementById("pui");
+    const confirm = document.createElement("p");
+    confirm.id = "error_2last";
+    confirm.style.cssText =
+      "left: 1015px; top: 200px; position: absolute; background-color: #FF6737; text-align: center; vertical-align: middle;";
+    confirm.textContent = "Segundo Apellido es obligatorio";
+    container.appendChild(confirm);
+  } else {
+    var err = document.getElementById("error_2last");
+    if (err) {
+      err.remove();
+    }
+  }
+
+  var dateValue = document.getElementById("date").value;
+  var regex_FdN = /^\d{2}\/\d{2}\/\d{4}$/;
+
+  if (dateValue === "") {
+    const container = document.getElementById("pui");
+    const confirm = document.createElement("p");
+    confirm.id = "error_date";
+    confirm.style.cssText =
+      "left: 1032px; top: 230px; position: absolute; background-color: #FF6737; text-align: center; vertical-align: middle;";
+    confirm.textContent = "Fecha de nacimiento obligatoria";
+    container.appendChild(confirm);
+  } else {
+    if (!regex_FdN.test(dateValue)) {
+      const container = document.getElementById("pui");
+      const confirm = document.createElement("p");
+      confirm.id = "error_date";
+      confirm.style.cssText =
+        "left: 1032px; top: 230px; position: absolute; background-color: #FF6737; text-align: center; vertical-align: middle;";
+      confirm.textContent = "Fecha de nacimiento no valida";
+      container.appendChild(confirm);
+    } else {
+      var err = document.getElementById("error_date");
+      if (err) {
+        err.remove();
       }
     }
-    eliminarUltimoElemento();
-    if (dataJson.status == true) {
-      name.value = "";
-      last.value = "";
-      last2.value = "";
-      date.value = "";
-      dni.value = "";
-      position.value = "";
+  }
+
+  var dniValue = document.getElementById("dni").value;
+
+  var regexNIE = /^[XYZ][0-9]{7}[A-Za-z]$/;
+  var regexDNI_NIF = /^\d{8}[a-zA-Z]$/;
+
+  if (dniValue === "") {
+    const container = document.getElementById("pui");
+    const confirm = document.createElement("p");
+    confirm.id = "error_dni";
+    confirm.style.cssText =
+      "left: 1015px; top: 260px; position: absolute; background-color: #FF6737; text-align: center; vertical-align: middle;";
+    confirm.textContent = "DNI obligatorio";
+    container.appendChild(confirm);
+  } else {
+    if (!regexDNI_NIF.test(dniValue)) {
+      if (!regexNIE.test(dniValue)) {
+        const container = document.getElementById("pui");
+        const confirm = document.createElement("p");
+        confirm.id = "error_dni";
+        confirm.style.cssText =
+          "left: 1015px; top: 260px; position: absolute; background-color: #FF6737; text-align: center; vertical-align: middle;";
+        confirm.textContent = "Identificación no válida";
+        container.appendChild(confirm);
+      }
+    } else {
+      var err = document.getElementById("error_dni");
+      if (err) {
+        err.remove();
+      }
+    }
+  }
+
+  var positionValue = document.getElementById("position").value;
+  if (positionValue === "") {
+    const container = document.getElementById("pui");
+    const confirm = document.createElement("p");
+    confirm.id = "error_puesto";
+    confirm.style.cssText =
+      "left: 1015px; top: 290px; position: absolute; background-color: #FF6737; text-align: center; vertical-align: middle;";
+    confirm.textContent = "Puesto obligatorio";
+    container.appendChild(confirm);
+  } else {
+    var err = document.getElementById("error_puesto");
+    if (err) {
+      err.remove();
+    }
+  }
+
+  try {
+    if (
+      nameValue != "" &&
+      lastValue != "" &&
+      last2Value != "" &&
+      dateValue != "" &&
+      dniValue != "" &&
+      positionValue != ""
+    ) {
+      let data = new FormData();
+      data.append("name", nameValue);
+      data.append("last", lastValue);
+      data.append("last2", last2Value);
+      data.append("date", dateValue);
+      data.append("dni", dniValue);
+      data.append("position", positionValue);
+      data.append("anadir", "anadir");
+
+      const response = await fetch("phpfiles/request.php?", {
+        method: "POST",
+        body: data,
+      });
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const text = await response.text();
+
+      const dataJson = JSON.parse(text);
+
+      console.log(text);
+
+      if (dataJson.status == true) {
+        document.getElementById("name").value = "";
+        document.getElementById("1last").value = "";
+        document.getElementById("2last").value = "";
+        document.getElementById("date").value = "";
+        document.getElementById("dni").value = "";
+        document.getElementById("position").value = "";
+
+        const container = document.getElementById("pui");
+        const confirm = document.createElement("p");
+        confirm.id = "ok";
+        confirm.style.cssText =
+          "left: 875px; top: 360px; position: absolute; background-color: #B4FF9A; text-align: center; vertical-align: middle;";
+        confirm.textContent = dataJson.message;
+        container.appendChild(confirm);
+      } else {
+        const container = document.getElementById("pui");
+        const confirm = document.createElement("p");
+        confirm.id = "backend_error";
+        confirm.style.cssText =
+          "left: 875px; top: 360px; position: absolute; background-color: #FF6737; text-align: center; vertical-align: middle;";
+        confirm.textContent = dataJson.message;
+        container.appendChild(confirm);
+      }
     }
   } catch (error) {
     console.error("There has been a problem with your fetch operation:", error);

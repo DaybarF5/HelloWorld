@@ -46,14 +46,14 @@ function anadir_empleados($parameter)
                 return $data1;
             }
 
-            $filtroFecha = validateDate($person['Fdn']);
+            $filtroFecha = validateDate($person['FdN']);
             if ($filtroFecha != true) {
                 $data1['message'] = "Fecha no existente";
                 $data1['status'] = false;
                 return $data1;
             }
 
-            $filtroDNI = validateDNI($person['DNI']);
+            $filtroDNI = validateDNI_NIF_NIE($person['DNI']);
             if ($filtroDNI != true) {
                 $data1['message'] = "DNI no existente.";
                 $data1['status'] = false;
@@ -90,8 +90,6 @@ function anadir_empleados($parameter)
 
             $data1['message'] = "Error: " . $e->getMessage();
         }
-    } else {
-        $data1['message'] = 'Faltan campos';
-    }
+    } 
     return $data1;
 }

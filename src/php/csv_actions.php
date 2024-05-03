@@ -27,8 +27,7 @@ function descargar()
         $cabecera = array('Nombre', 'Primer_Apellido', 'Segundo_Apellido', 'Fecha_de_nacimiento', 'DNI', 'Puesto');
 
 
-
-        fputcsv($archivo_csv, $cabecera,';');
+        fputcsv($archivo_csv, $cabecera, ';');
 
         foreach ($empleados as $empleado) {
 
@@ -41,7 +40,7 @@ function descargar()
                 $empleado['Puesto']
             );
 
-            fputcsv($archivo_csv, $row,';');
+            fputcsv($archivo_csv, $row, ';');
         }
 
 
@@ -60,13 +59,13 @@ function cargar_empleados($parameter)
     $lineas_csv = file($csv, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
 
     // recojo nombres de las columnas
-    $cabecera = str_getcsv(array_shift($lineas_csv),';');
+    $cabecera = str_getcsv(array_shift($lineas_csv), ';');
 
     $empleados = array();
 
     // recoger la informacion del archivo, y acomodarlo
     foreach ($lineas_csv as $linea) {
-        $csv = str_getcsv($linea,';');
+        $csv = str_getcsv($linea, ';');
         $fila = array();
         foreach ($csv as $index => $valor) {
             $nombre_columna = $cabecera[$index];
@@ -75,7 +74,32 @@ function cargar_empleados($parameter)
         $empleados[] = $fila;
     }
 
+
+    for ($f = 0; $f < count($empleados); $f++) {
+        $filterDNI = validateDNI_NIF_NIE($empleados[$f]['DNI']);
+        $filterDate = validateDate($empleados[$f]['Fecha_de_nacimiento']);
+        $filterJob = validateJob($empleados[$f]['Puesto']);
+        if ($filterDNI != true) {
+            $resultado['message'] = "Revise DNIs, hemos encontrado DNIs no existentes";
+            $resultado['status'] = false;
+            return $resultado;
+        }
+        if ($filterDate != true) {
+            $resultado['message'] = "Revise fechas, hemos encontrado fechas no existentes";
+            $resultado['status'] = false;
+            return $resultado;
+        }
+        if ($filterJob != true) {
+            $resultado['message'] = "Revise puestos, hemos encontrado puestos no existentes";
+            $resultado['status'] = false;
+            return $resultado;
+        }
+    }
+
+
+
     $bd = dirname(__FILE__) . '/../database/F5.sqlite';
+
     try {
         $connect = new SQLite3($bd);
         $stmt = $connect->prepare("INSERT INTO EMPLEADOS (Nombre, Primer_Apellido, Segundo_Apellido, Fecha_de_nacimiento, DNI, Puesto) VALUES (?, ?, ?, ?, ?, ?)");

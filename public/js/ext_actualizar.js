@@ -13,10 +13,12 @@ function actualizar_empleado(row, campo) {
   }
   if (campo == "DNI") {
     var regexDNI = /^\d{8}[a-zA-Z]$/;
-    if (regexDNI.test(valor)) {
-    } else {
-      alert("DNI incorrecto. Ejemplo: 12345678A");
-      return false;
+    var regexNIE = /^[XYZ][0-9]{7}[A-Za-z]$/;
+    if (!regexDNI.test(valor)) {
+      if (!regexNIE.test(valor)) {
+        alert("Identificación incorrecta. Ejemplo: 12345678A / X1234567Z");
+        return false;
+      }
     }
   }
 
@@ -28,7 +30,7 @@ function actualizar_empleado(row, campo) {
       "&id=" +
       id
   );
-  
+
   var data = JSON.parse(resultado);
 
   if (data.status == true) {
@@ -39,7 +41,7 @@ function actualizar_empleado(row, campo) {
     }, 1000);
   } else {
     let ok = document.getElementById(campo + "." + row);
-    ok.style.backgroundColor = "#FF3816"; //si no se hace, es rojo
+    ok.style.backgroundColor = "#FF6737"; //si no se hace, es rojo
     setTimeout(function () {
       ok.style.backgroundColor = "";
     }, 1000);
@@ -85,21 +87,20 @@ document.getElementById("submit").onclick = async function () {
 
     setTimeout(function () {
       location.reload();
-    }, 1000);
+    }, 2000);
   } catch (error) {
     console.error(error);
 
     const container = document.getElementById("HtmlContainer2");
     const confirm = document.createElement("span");
     confirm.style = "position: absolute;  left: 50%; top: 40%;";
-    confirm.textContent = "error en el csv: "+error;
+    confirm.textContent = "error en el csv: " + error;
     container.appendChild(confirm);
-
   }
 };
 
 document.getElementById("descargarCSV").onclick = function () {
   let peticion = ajax("phpfiles/request.php?" + "download=1");
-  
+
   window.location.href = "/../temp/empleados.csv";
 };

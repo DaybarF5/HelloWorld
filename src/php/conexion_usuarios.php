@@ -113,8 +113,6 @@ function registrar($parameter)
 
             $resultado['message'] = 'Error: ' . $e->getMessage();
         }
-    } else {
-        $resultado['message'] = 'Faltan campos';
-    }
+    } 
     return $resultado;
 }
